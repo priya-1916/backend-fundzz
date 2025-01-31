@@ -1,6 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const Campaign = require('./models/Campaign'); // Assuming you have the Campaign schema in models folder
+const Campaign = require('../models/Campaign'); // Assuming you have the Campaign schema in models folder
 
 const router = express.Router();
 
