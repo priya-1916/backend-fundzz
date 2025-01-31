@@ -5,14 +5,14 @@ const cors = require('cors');
 
 // Initialize the app
 const app = express();
-const PORT = process.env.PORT || 8002;
+const PORT = 8002; // Use PORT from .env
 
 // Middleware
 app.use(express.json());
-app.use(cors("*"));
+app.use(cors());
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://priya:priya2007@cluster0.epuug.mongodb.net/New')
+mongoose.connect(MONGO_URI)
   .then(() => console.log('✅ MongoDB connected successfully'))
   .catch((err) => console.error('❌ MongoDB connection error:', err));
 

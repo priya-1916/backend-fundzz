@@ -6,17 +6,14 @@ const cors = require("cors");
 
 const app = express();
 const PORT = process.env.PORT || 8005;
-const JWT_SECRET = process.env.JWT_SECRET || 'funds';
+const JWT_SECRET = process.env.JWT_SECRET;
 
 // Middleware
 app.use(express.json());
-app.use(cors("*"));
+app.use(cors());
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://priya:priya2007@cluster0.epuug.mongodb.net/New', {
-
-  // Timeout for sockets to close
-})
+mongoose.connect (MONGO_URI)
 .then(() => console.log("Connected to MongoDB"))
 .catch((err) => console.error("Error connecting to MongoDB:", err));
 
