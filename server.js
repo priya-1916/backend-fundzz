@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require("express");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
@@ -5,18 +6,18 @@ const jwt = require("jsonwebtoken");
 const cors = require("cors");
 
 const app = express();
-const PORT = process.env.PORT || 8005;
+const PORT = process.env.PORT_AUTH || 8005;
 const JWT_SECRET = process.env.JWT_SECRET;
+const MONGO_URI = process.env.MONGO_URI;
 
 // Middleware
 app.use(express.json());
 app.use(cors());
 
 // Connect to MongoDB
-mongoose.connect (MONGO_URI)
-.then(() => console.log("Connected to MongoDB"))
-.catch((err) => console.error("Error connecting to MongoDB:", err));
-
+mongoose.connect(MONGO_URI)
+  .then(() => console.log("✅ Connected to MongoDB"))
+  .catch((err) => console.error("❌ Error connecting to MongoDB:", err));
 
 // User Schema and Model
 const userSchema = new mongoose.Schema({
@@ -84,5 +85,5 @@ app.get("/users", async (req, res) => {
 
 // Start the server
 app.listen(PORT, () => {
-  console.log(`Auth server is running on http://localhost:${PORT}`);
+  console.log(`🚀 Auth server is running on http://localhost:${PORT}`);
 });

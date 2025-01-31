@@ -1,11 +1,11 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
-
-// Initialize the app
 const app = express();
-const PORT = 8002; // Use PORT from .env
+const PORT = process.env.PORT || 8002;
+const MONGO_URI = process.env.MONGO_URI;
 
 // Middleware
 app.use(express.json());
