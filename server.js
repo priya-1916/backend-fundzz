@@ -2,29 +2,57 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const helmet = require('helmet');
+const path = require('path');
+const favicon = require('serve-favicon');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 const MONGO_URI = process.env.MONGO_URI;
 
-// Import Routes
+// 🌍 Allowed Frontend URLs
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://fundzz-4lpt.vercel.app/"  // Change this to your deployed frontend URL
+];
+
+// 🛡️ Security Middleware
+app.use(helmet());
+
+// ✅ Corrected CORS Middleware
+app.use(
+  cors()
+);
+
+app.use(express.json());
+
+// ✅ Serve Favicon (Fix for Missing Favicon Crash)
+const faviconPath = path.join(__dirname, 'public', 'favicon.ico');
+if (require('fs').existsSync(faviconPath)) {
+  app.use(favicon(faviconPath));
+} else {
+  console.warn("⚠️ Favicon not found at", faviconPath);
+}
+
+// 🚀 Connect to MongoDB
+mongoose
+  .connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log('✅ MongoDB connected successfully'))
+  .catch((err) => console.error('❌ MongoDB connection error:', err));
+
+// 🔄 Routes
 const campaignRoutes = require('./routes/campaignRoutes');
 const authRoutes = require('./routes/authRoutes');
 
-// Middleware
-app.use(express.json());
-app.use(cors({origin:"http://localhost:5173/"}));
+app.use("/", campaignRoutes);
+app.use("/", authRoutes);
 
-// Connect to MongoDB
-mongoose.connect(MONGO_URI)
-  .then(() => console.log('MongoDB connected successfully'))
-  .catch((err) => console.error('MongoDB connection error:', err));
+// 🌍 Health Check Route
+app.get("/", (req, res) => {
+  res.send("Server is running...");
+});
 
-// Use Routes
-app.use(campaignRoutes);
-app.use(authRoutes);
-
-// Start the server
+// 🎯 Start Server
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`🚀 Server running on http://localhost:${PORT}`);
 });
