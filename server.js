@@ -12,7 +12,7 @@ const MONGO_URI = process.env.MONGO_URI;
 
 // Middleware
 app.use(express.json());
-app.use(cors());
+app.use(cors({origin:"http://localhost:5173/"}));
 
 // Connect to MongoDB
 mongoose.connect(MONGO_URI)
